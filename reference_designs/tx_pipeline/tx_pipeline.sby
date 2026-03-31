@@ -1,0 +1,32 @@
+[tasks]
+prove
+
+[options]
+mode prove
+depth 60
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal -sv ../../interfaces/fg_pkg.sv
+read -formal -sv ../../interfaces/fg_tx_if.sv
+read -formal -sv ../../properties/transaction/atomicity.sv
+read -formal -sv ../../properties/transaction/isolation.sv
+read -formal -sv ../../properties/transaction/integrity.sv
+read -formal -sv ../../properties/transaction/ordering.sv
+read -formal -sv tx_pipeline.sv
+read -formal -sv tx_pipeline_top.sv
+read -formal -sv fg_bind_tx_pipeline.sv
+prep -top tx_pipeline_top
+
+[files]
+../../interfaces/fg_pkg.sv
+../../interfaces/fg_tx_if.sv
+../../properties/transaction/atomicity.sv
+../../properties/transaction/isolation.sv
+../../properties/transaction/integrity.sv
+../../properties/transaction/ordering.sv
+tx_pipeline.sv
+tx_pipeline_top.sv
+fg_bind_tx_pipeline.sv

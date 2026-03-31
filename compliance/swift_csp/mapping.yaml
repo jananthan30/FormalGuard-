@@ -1,0 +1,101 @@
+# FormalGuard — SWIFT Customer Security Programme (CSP) Compliance Mapping
+# =========================================================================
+# Maps FormalGuard properties to SWIFT CSP controls related to HSM
+# security, secure messaging, and transaction integrity.
+
+standard: SWIFT CSP
+version: "2024"
+last_updated: "2026-03-30"
+
+mappings:
+  - requirement_id: "1.1"
+    requirement_text: >
+      Restrict Internet Access and Protect Critical Systems from
+      General IT Environment
+    properties:
+      - FG_HSM_KEY_002
+      - FG_TX_ISOL_001
+    verification_status: null
+    notes: >
+      At the hardware level, maps to key isolation (no key on external bus)
+      and transaction pipeline isolation.
+
+  - requirement_id: "1.2"
+    requirement_text: >
+      Restrict and control the use of operator-level credentials
+    properties:
+      - FG_HSM_AUTH_001
+      - FG_HSM_AUTH_002
+      - FG_HSM_AUTH_003
+    verification_status: null
+    notes: >
+      HSM authentication enforcement, dual-control for critical operations,
+      and lockout after failed attempts.
+
+  - requirement_id: "2.1"
+    requirement_text: >
+      Ensure the confidentiality, integrity, and mutual authenticity
+      of data exchanged between the local SWIFT infrastructure and
+      the service provider
+    properties:
+      - FG_AES_FUNC_001
+      - FG_AES_FUNC_002
+      - FG_AES_TIME_001
+      - FG_RSA_FUNC_001
+      - FG_SHA_FUNC_001
+      - FG_SHA_FUNC_002
+    verification_status: null
+    notes: >
+      Cryptographic correctness and side-channel resistance for the
+      hardware modules handling SWIFT message encryption and signing.
+
+  - requirement_id: "2.2"
+    requirement_text: >
+      Ensure the confidentiality, integrity and authenticity of
+      operator sessions
+    properties:
+      - FG_HSM_AUTH_001
+      - FG_HSM_KEY_002
+      - FG_SC_CT_001
+    verification_status: null
+    notes: >
+      Session key protection, authentication enforcement, and
+      constant-time operations to prevent side-channel leakage.
+
+  - requirement_id: "2.6"
+    requirement_text: >
+      Protect the confidentiality and integrity of SWIFT messages
+      during transmission over the local network
+    properties:
+      - FG_TX_INTEG_001
+      - FG_TX_ORDER_001
+    verification_status: null
+    notes: >
+      Transaction integrity (checksum verification) and ordering
+      guarantees for message processing pipelines.
+
+  - requirement_id: "4.1"
+    requirement_text: >
+      Ensure adequate logging of security-relevant events and
+      detect anomalous actions
+    properties:
+      - FG_HSM_TAMP_001
+      - FG_HSM_TAMP_002
+    verification_status: null
+    notes: >
+      Tamper detection and response ensures that physical security
+      events are captured and acted upon immediately.
+
+  - requirement_id: "5.1"
+    requirement_text: >
+      Ensure the protection of the operator's credentials used for
+      authentication to SWIFT
+    properties:
+      - FG_HSM_KEY_001
+      - FG_HSM_KEY_003
+      - FG_HSM_KEY_004
+      - FG_HSM_KEY_005
+    verification_status: null
+    notes: >
+      Full key lifecycle protection: generation with sufficient entropy,
+      bounded zeroization, atomic rotation, no post-destruction remnants.

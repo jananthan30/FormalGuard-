@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FormalGuard — PCI-DSS v4.0 Compliance Report</title>
+  <style>
+    :root {
+      --fg-pass: #22c55e;
+      --fg-fail: #ef4444;
+      --fg-warn: #f59e0b;
+      --fg-gray: #6b7280;
+      --fg-bg: #f9fafb;
+      --fg-card: #ffffff;
+      --fg-border: #e5e7eb;
+      --fg-text: #111827;
+      --fg-text-secondary: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--fg-bg);
+      color: var(--fg-text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header {
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--fg-text-secondary); font-size: 0.9rem; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metric-card {
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .metric-label {
+      color: var(--fg-text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .metric-pass { color: var(--fg-pass); }
+    .metric-fail { color: var(--fg-fail); }
+    .metric-warn { color: var(--fg-warn); }
+    .metric-gray { color: var(--fg-gray); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    th {
+      background: #f3f4f6;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-text-secondary);
+    }
+    td { padding: 0.75rem 1rem; border-top: 1px solid var(--fg-border); }
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-proven { background: #dcfce7; color: #166534; }
+    .status-failed { background: #fee2e2; color: #991b1b; }
+    .status-partial { background: #fef3c7; color: #92400e; }
+    .status-not_run { background: #f3f4f6; color: #6b7280; }
+    .property-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0 0;
+    }
+    .property-list li {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      padding: 0.15rem 0;
+    }
+    .prop-proven { color: var(--fg-pass); }
+    .prop-failed { color: var(--fg-fail); }
+    .prop-not_run { color: var(--fg-gray); }
+    footer {
+      text-align: center;
+      color: var(--fg-text-secondary);
+      font-size: 0.8rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--fg-border);
+    }
+    .notes { font-size: 0.85rem; color: var(--fg-text-secondary); margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FormalGuard Compliance Report</h1>
+      <div class="subtitle">
+        PCI-DSS v4.0 &mdash;
+        Generated 2026-03-30T19:22:47.844551
+      </div>
+    </header>
+
+    <!-- Executive Summary -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value">8</div>
+        <div class="metric-label">Requirements</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-pass">0</div>
+        <div class="metric-label">Proven</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-fail">0</div>
+        <div class="metric-label">Failed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-gray">6</div>
+        <div class="metric-label">Not Verified</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">100.0%</div>
+        <div class="metric-label">Coverage</div>
+      </div>
+    </div>
+
+    <!-- Per-Requirement Breakdown -->
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><strong>3.5.1</strong></td>
+          <td>
+            Cryptographic keys used to protect stored account data are secured against disclosure and misuse
+
+            
+            <div class="notes">Covers both functional correctness of cryptographic operations and resistance to timing side-channel attacks that could leak key material.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-partial">
+              PARTIAL
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-proven">
+                FG_AES_FUNC_001
+                (proven)
+              </li>
+              
+              
+              <li class="prop-proven">
+                FG_AES_FUNC_002
+                (proven)
+              </li>
+              
+              
+              <li class="prop-proven">
+                FG_AES_TIME_001
+                (proven)
+              </li>
+              
+              
+              <li class="prop-proven">
+                FG_AES_TIME_002
+                (proven)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_KEY_002
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_RSA_FUNC_001
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_RSA_TIME_001
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_SHA_FUNC_002
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_SC_CT_001
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.5.2</strong></td>
+          <td>
+            Cryptographic operations require prior authentication
+
+            
+            <div class="notes">Verifies that no cryptographic operation can execute on the HSM without a preceding successful authentication event.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_AUTH_001
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.6.1</strong></td>
+          <td>
+            Strong cryptography key management processes and procedures are defined and implemented, including generation of strong keys
+
+            
+            <div class="notes">Enforces minimum key length requirements and entropy standards for key generation in hardware.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-partial">
+              PARTIAL
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-proven">
+                FG_AES_FUNC_004
+                (proven)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_RSA_FUNC_002
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_KEY_001
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.6.4</strong></td>
+          <td>
+            Cryptographic key changes for keys that have reached the end of their cryptoperiod are performed
+
+            
+            <div class="notes">Verifies atomic key rotation: old key becomes invalid only after new key is confirmed active, preventing service disruption.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_KEY_004
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.6.5</strong></td>
+          <td>
+            Retirement or replacement of keys is performed when the integrity of the key has been weakened or keys are suspected of being compromised
+
+            
+            <div class="notes">Verifies complete key destruction (zeroization): all copies overwritten within bounded time, no remnants in RAM.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_KEY_003
+                (not run)
+              </li>
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_KEY_005
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.6.6</strong></td>
+          <td>
+            Split knowledge and dual control of cryptographic keys are used for manual clear-text key management operations
+
+            
+            <div class="notes">Verifies dual-control enforcement: critical operations (key export, firmware update) require two independent authentications.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_AUTH_002
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>3.4</strong></td>
+          <td>
+            Access to displays of full PAN and ability to copy cardholder data are restricted
+
+            
+            <div class="notes">At the hardware level, this maps to transaction isolation â€” preventing data leakage between pipeline transactions.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_TX_ISOL_001
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+        <tr>
+          <td><strong>8.1.6</strong></td>
+          <td>
+            Access is limited based on failed authentication attempts
+
+            
+            <div class="notes">Verifies that the HSM locks out after N consecutive failed authentication attempts.
+</div>
+            
+          </td>
+          <td>
+            <span class="status-badge status-not_run">
+              NOT_RUN
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              
+              
+              <li class="prop-not_run">
+                FG_HSM_AUTH_003
+                (not run)
+              </li>
+              
+            </ul>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+
+    <footer>
+      <p>
+        Generated by <strong>FormalGuard</strong> Compliance Report Generator
+        &mdash; This report is informational and does not replace a qualified security assessment.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

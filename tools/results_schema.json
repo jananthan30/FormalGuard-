@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FormalGuard Verification Results",
+  "description": "Standardized format for formal verification tool output",
+  "type": "object",
+  "required": ["tool", "timestamp", "results"],
+  "properties": {
+    "tool": {
+      "type": "string",
+      "description": "Name of the formal verification tool"
+    },
+    "tool_version": {
+      "type": "string",
+      "description": "Version of the tool"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the verification was run"
+    },
+    "design": {
+      "type": "string",
+      "description": "Name of the design under verification"
+    },
+    "commit": {
+      "type": "string",
+      "description": "Git commit hash of the verified code"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["property_id", "status"],
+        "properties": {
+          "property_id": {
+            "type": "string",
+            "pattern": "^FG_[A-Z]+_[A-Z]+_\\d{3}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["proven", "failed", "error", "not_run", "inconclusive"]
+          },
+          "tool": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional detail (e.g., counterexample summary)"
+          },
+          "depth": {
+            "type": "integer",
+            "description": "BMC depth at which property was proved/failed"
+          }
+        }
+      }
+    }
+  }
+}

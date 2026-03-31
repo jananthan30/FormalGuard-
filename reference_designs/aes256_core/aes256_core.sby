@@ -1,0 +1,36 @@
+[tasks]
+prove
+bmc
+
+[options]
+prove: mode prove
+prove: depth 50
+bmc: mode bmc
+bmc: depth 100
+
+[engines]
+prove: smtbmc z3
+bmc: smtbmc z3
+
+[script]
+read -formal -sv ../../interfaces/fg_pkg.sv
+read -formal -sv ../../interfaces/fg_aes256_if.sv
+read -formal -sv ../../properties/crypto/aes256/aes_functional.sv
+read -formal -sv ../../properties/crypto/aes256/aes_timing.sv
+read -formal -sv ../../properties/crypto/aes256/aes_fault.sv
+read -formal -sv aes256_sbox.sv
+read -formal -sv aes256_core.sv
+read -formal -sv aes256_core_top.sv
+read -formal -sv fg_bind_aes256_core.sv
+prep -top aes256_core_top
+
+[files]
+../../interfaces/fg_pkg.sv
+../../interfaces/fg_aes256_if.sv
+../../properties/crypto/aes256/aes_functional.sv
+../../properties/crypto/aes256/aes_timing.sv
+../../properties/crypto/aes256/aes_fault.sv
+aes256_sbox.sv
+aes256_core.sv
+aes256_core_top.sv
+fg_bind_aes256_core.sv

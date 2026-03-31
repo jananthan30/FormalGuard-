@@ -1,0 +1,77 @@
+name: FormalGuard CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-lint-and-test:
+    name: Python Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ruff
+      - name: Lint Python
+        run: ruff check tools/ tests/
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+  sva-lint:
+    name: SVA Syntax Lint
+    runs-on: ubuntu-latest
+    container:
+      image: hdlc/formal:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint SystemVerilog with Verilator
+        run: |
+          find properties/ interfaces/ -name "*.sv" -exec \
+            verilator --lint-only -Wall {} \; || true
+
+  formal-verification:
+    name: Formal Verification (SymbiYosys)
+    runs-on: ubuntu-latest
+    container:
+      image: hdlc/formal:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify AES-256 (known-good)
+        run: |
+          if [ -f reference_designs/aes256_core/aes256_core.sby ]; then
+            cd reference_designs/aes256_core && sby -f aes256_core.sby
+          else
+            echo "No .sby config found — skipping"
+          fi
+      - name: Verify AES-256 (vulnerable — expect failures)
+        continue-on-error: true
+        run: |
+          if [ -f reference_designs/vuln_aes/vuln_aes.sby ]; then
+            cd reference_designs/vuln_aes && sby -f vuln_aes.sby
+          else
+            echo "No .sby config found — skipping"
+          fi
+
+  compliance-report:
+    name: Compliance Report Dry Run
+    runs-on: ubuntu-latest
+    needs: python-lint-and-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate PCI-DSS report (dry run)
+        run: |
+          if [ -f tools/compliance_report.py ]; then
+            python tools/compliance_report.py --standard pci-dss --dry-run || true
+          fi

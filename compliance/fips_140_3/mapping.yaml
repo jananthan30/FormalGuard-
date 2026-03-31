@@ -1,0 +1,106 @@
+# FormalGuard — FIPS 140-3 Compliance Mapping
+# ==============================================
+# Maps FormalGuard properties to FIPS 140-3 cryptographic module
+# security requirements across multiple security levels.
+
+standard: FIPS 140-3
+version: "2019"
+last_updated: "2026-03-30"
+
+mappings:
+  - requirement_id: "AS.03.10"
+    requirement_text: >
+      Approved cryptographic algorithms — the module shall implement
+      approved cryptographic algorithms correctly
+    properties:
+      - FG_AES_FUNC_001
+      - FG_AES_FUNC_002
+      - FG_AES_FUNC_003
+      - FG_RSA_FUNC_001
+      - FG_SHA_FUNC_001
+      - FG_SHA_FUNC_003
+      - FG_ECDSA_FUNC_001
+    verification_status: null
+    notes: >
+      Functional correctness of all cryptographic algorithm
+      implementations, verified against NIST test vectors and
+      standard specifications.
+
+  - requirement_id: "AS.03.17"
+    requirement_text: >
+      Key management — cryptographic keys and CSPs shall be managed
+      in accordance with approved methods
+    properties:
+      - FG_AES_FUNC_004
+      - FG_RSA_FUNC_002
+      - FG_HSM_KEY_001
+      - FG_HSM_KEY_002
+      - FG_HSM_KEY_003
+      - FG_HSM_KEY_004
+      - FG_HSM_KEY_005
+      - FG_ECDSA_NONCE_002
+    verification_status: null
+    notes: >
+      Complete key lifecycle verification including minimum key lengths,
+      storage isolation, rotation, and destruction. Includes ECDSA
+      nonce generation from approved DRBG.
+
+  - requirement_id: "AS.04.31"
+    requirement_text: >
+      Physical security Level 3+ — tamper detection and response with
+      immediate zeroization of all CSPs
+    properties:
+      - FG_HSM_TAMP_001
+      - FG_HSM_TAMP_002
+      - FG_HSM_TAMP_003
+      - FG_AES_FAULT_001
+      - FG_AES_FAULT_002
+    verification_status: null
+    notes: >
+      Tamper response properties ensure bounded zeroization, non-interruptible
+      destruction, and no key remnants. Fault resistance properties
+      verify DFA attack detection.
+
+  - requirement_id: "AS.11.34"
+    requirement_text: >
+      Non-invasive security Level 3+ — the module shall mitigate
+      against non-invasive attacks including timing, power, and EM
+    properties:
+      - FG_AES_TIME_001
+      - FG_AES_TIME_002
+      - FG_AES_TIME_003
+      - FG_RSA_TIME_001
+      - FG_SC_CT_001
+      - FG_SC_CT_002
+      - FG_SC_PWR_001
+      - FG_SC_DIF_001
+    verification_status: null
+    notes: >
+      Comprehensive side-channel resistance verification: constant-time
+      execution, no secret-dependent branches, power-balanced logic,
+      and data-independent control flow.
+
+  - requirement_id: "AS.05.13"
+    requirement_text: >
+      Self-tests — the module shall perform self-tests to ensure
+      correct operation of cryptographic algorithms
+    properties:
+      - FG_AES_FAULT_002
+      - FG_SHA_FUNC_001
+    verification_status: null
+    notes: >
+      Internal consistency checks and known-answer tests verified
+      at the formal level.
+
+  - requirement_id: "AS.10.45"
+    requirement_text: >
+      Authentication mechanisms — the module shall authenticate
+      operators before permitting access to services
+    properties:
+      - FG_HSM_AUTH_001
+      - FG_HSM_AUTH_002
+      - FG_HSM_AUTH_003
+    verification_status: null
+    notes: >
+      Role-based authentication, dual-control for critical operations,
+      and lockout after failed attempts.

@@ -1,0 +1,38 @@
+[tasks]
+prove
+
+[options]
+mode prove
+depth 80
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal -sv ../../interfaces/fg_pkg.sv
+read -formal -sv ../../interfaces/fg_hsm_if.sv
+read -formal -sv ../../properties/hsm/key_lifecycle/key_generation.sv
+read -formal -sv ../../properties/hsm/key_lifecycle/key_storage.sv
+read -formal -sv ../../properties/hsm/key_lifecycle/key_rotation.sv
+read -formal -sv ../../properties/hsm/key_lifecycle/key_destruction.sv
+read -formal -sv ../../properties/hsm/access_control/auth_enforcement.sv
+read -formal -sv ../../properties/hsm/tamper_response/tamper_detect.sv
+read -formal -sv ../../properties/hsm/tamper_response/tamper_zeroize.sv
+read -formal -sv simple_hsm.sv
+read -formal -sv simple_hsm_top.sv
+read -formal -sv fg_bind_simple_hsm.sv
+prep -top simple_hsm_top
+
+[files]
+../../interfaces/fg_pkg.sv
+../../interfaces/fg_hsm_if.sv
+../../properties/hsm/key_lifecycle/key_generation.sv
+../../properties/hsm/key_lifecycle/key_storage.sv
+../../properties/hsm/key_lifecycle/key_rotation.sv
+../../properties/hsm/key_lifecycle/key_destruction.sv
+../../properties/hsm/access_control/auth_enforcement.sv
+../../properties/hsm/tamper_response/tamper_detect.sv
+../../properties/hsm/tamper_response/tamper_zeroize.sv
+simple_hsm.sv
+simple_hsm_top.sv
+fg_bind_simple_hsm.sv

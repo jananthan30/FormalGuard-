@@ -1,0 +1,63 @@
+# FormalGuard — Compliance Mapping Schema
+# ========================================
+# All compliance mapping YAML files must conform to this schema.
+# Validated by tools/compliance_report.py and tests/test_compliance_mapping.py
+
+$schema: "http://json-schema.org/draft-07/schema#"
+title: FormalGuard Compliance Mapping
+description: Maps FormalGuard property IDs to regulatory compliance requirements
+type: object
+
+required:
+  - standard
+  - version
+  - last_updated
+  - mappings
+
+properties:
+  standard:
+    type: string
+    description: Name of the compliance standard
+
+  version:
+    type: string
+    description: Version of the compliance standard
+
+  last_updated:
+    type: string
+    format: date
+    description: Date this mapping was last updated
+
+  mappings:
+    type: array
+    items:
+      type: object
+      required:
+        - requirement_id
+        - requirement_text
+        - properties
+      properties:
+        requirement_id:
+          type: string
+          description: Unique identifier for the requirement within the standard
+
+        requirement_text:
+          type: string
+          description: Human-readable description of the requirement
+
+        properties:
+          type: array
+          items:
+            type: string
+            pattern: "^FG_[A-Z]+_[A-Z]+_\\d{3}$"
+          description: List of FormalGuard property IDs that verify this requirement
+
+        verification_status:
+          type: string
+          enum: [proven, failed, not_run, partial, null]
+          description: Populated by compliance_report.py after verification
+          default: null
+
+        notes:
+          type: string
+          description: Additional context for auditors

@@ -1,0 +1,32 @@
+[tasks]
+prove
+
+[options]
+mode prove
+depth 50
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal -sv ../../interfaces/fg_pkg.sv
+read -formal -sv ../../interfaces/fg_aes256_if.sv
+read -formal -sv ../../properties/crypto/aes256/aes_functional.sv
+read -formal -sv ../../properties/crypto/aes256/aes_timing.sv
+read -formal -sv ../../properties/crypto/aes256/aes_fault.sv
+read -formal -sv ../aes256_core/aes256_sbox.sv
+read -formal -sv vuln_aes.sv
+read -formal -sv vuln_aes_top.sv
+read -formal -sv fg_bind_vuln_aes.sv
+prep -top vuln_aes_top
+
+[files]
+../../interfaces/fg_pkg.sv
+../../interfaces/fg_aes256_if.sv
+../../properties/crypto/aes256/aes_functional.sv
+../../properties/crypto/aes256/aes_timing.sv
+../../properties/crypto/aes256/aes_fault.sv
+../aes256_core/aes256_sbox.sv
+vuln_aes.sv
+vuln_aes_top.sv
+fg_bind_vuln_aes.sv

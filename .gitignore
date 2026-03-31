@@ -1,0 +1,66 @@
+# SystemVerilog simulation outputs
+*.vcd
+*.fsdb
+*.wlf
+*.vpd
+*.shm/
+*.trn
+*.log
+
+# Build/simulation directories
+build/
+work/
+csrc/
+simv
+simv.daidir/
+DVEfiles/
+AN.DB/
+urgReport/
+xcelium.d/
+
+# SymbiYosys outputs
+*_prove/
+*_bmc/
+*_cover/
+*_live/
+
+# Formal tool outputs
+*.rpt
+jgproject/
+formality_svf/
+
+# Generated reports
+reports/*.html
+reports/*.json
+reports/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets (never commit)
+.env
+*.key
+*.pem
+credentials.*

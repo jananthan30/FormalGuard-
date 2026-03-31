@@ -1,0 +1,54 @@
+{
+  "tool": "SymbiYosys",
+  "tool_version": "0.42",
+  "timestamp": "2026-03-30T10:00:00Z",
+  "design": "aes256_core",
+  "commit": "abc1234",
+  "results": [
+    {
+      "property_id": "FG_AES_FUNC_001",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:00:00Z",
+      "details": "Proved at depth 50 with Z3 solver",
+      "depth": 50
+    },
+    {
+      "property_id": "FG_AES_FUNC_002",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:00:00Z",
+      "details": "Proved at depth 50 with Z3 solver",
+      "depth": 50
+    },
+    {
+      "property_id": "FG_AES_FUNC_004",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:00:00Z",
+      "details": "Proved at depth 5 with Z3 solver",
+      "depth": 5
+    },
+    {
+      "property_id": "FG_AES_TIME_001",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:01:00Z",
+      "details": "Proved at depth 50 — no key-dependent timing detected"
+    },
+    {
+      "property_id": "FG_AES_TIME_002",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:01:00Z",
+      "details": "Proved at depth 50 — no plaintext-dependent timing detected"
+    },
+    {
+      "property_id": "FG_AES_TIME_003",
+      "status": "proven",
+      "tool": "SymbiYosys",
+      "timestamp": "2026-03-30T10:01:00Z",
+      "details": "Proved — no early termination"
+    }
+  ]
+}

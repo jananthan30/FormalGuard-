@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FormalGuard — {{ standard_name }} v{{ standard_version }} Compliance Report</title>
+  <style>
+    :root {
+      --fg-pass: #22c55e;
+      --fg-fail: #ef4444;
+      --fg-warn: #f59e0b;
+      --fg-gray: #6b7280;
+      --fg-bg: #f9fafb;
+      --fg-card: #ffffff;
+      --fg-border: #e5e7eb;
+      --fg-text: #111827;
+      --fg-text-secondary: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--fg-bg);
+      color: var(--fg-text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header {
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--fg-text-secondary); font-size: 0.9rem; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metric-card {
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .metric-label {
+      color: var(--fg-text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .metric-pass { color: var(--fg-pass); }
+    .metric-fail { color: var(--fg-fail); }
+    .metric-warn { color: var(--fg-warn); }
+    .metric-gray { color: var(--fg-gray); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--fg-card);
+      border: 1px solid var(--fg-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    th {
+      background: #f3f4f6;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-text-secondary);
+    }
+    td { padding: 0.75rem 1rem; border-top: 1px solid var(--fg-border); }
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-proven { background: #dcfce7; color: #166534; }
+    .status-failed { background: #fee2e2; color: #991b1b; }
+    .status-partial { background: #fef3c7; color: #92400e; }
+    .status-not_run { background: #f3f4f6; color: #6b7280; }
+    .property-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0 0;
+    }
+    .property-list li {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      padding: 0.15rem 0;
+    }
+    .prop-proven { color: var(--fg-pass); }
+    .prop-failed { color: var(--fg-fail); }
+    .prop-not_run { color: var(--fg-gray); }
+    footer {
+      text-align: center;
+      color: var(--fg-text-secondary);
+      font-size: 0.8rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--fg-border);
+    }
+    .notes { font-size: 0.85rem; color: var(--fg-text-secondary); margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FormalGuard Compliance Report</h1>
+      <div class="subtitle">
+        {{ standard_name }} v{{ standard_version }} &mdash;
+        Generated {{ generated_at }}
+      </div>
+    </header>
+
+    <!-- Executive Summary -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value">{{ metrics.total_requirements }}</div>
+        <div class="metric-label">Requirements</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-pass">{{ metrics.proven_requirements }}</div>
+        <div class="metric-label">Proven</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-fail">{{ metrics.failed_requirements }}</div>
+        <div class="metric-label">Failed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value metric-gray">{{ metrics.not_run_requirements }}</div>
+        <div class="metric-label">Not Verified</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ "%.1f"|format(metrics.coverage_percent) }}%</div>
+        <div class="metric-label">Coverage</div>
+      </div>
+    </div>
+
+    <!-- Per-Requirement Breakdown -->
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for mapping in mappings %}
+        <tr>
+          <td><strong>{{ mapping.requirement_id }}</strong></td>
+          <td>
+            {{ mapping.requirement_text }}
+            {% if mapping.notes %}
+            <div class="notes">{{ mapping.notes }}</div>
+            {% endif %}
+          </td>
+          <td>
+            <span class="status-badge status-{{ mapping.verification_status or 'not_run' }}">
+              {{ (mapping.verification_status or 'not_run') | upper }}
+            </span>
+          </td>
+          <td>
+            <ul class="property-list">
+              {% for prop_id in mapping.properties %}
+              {% set result = results.get(prop_id) %}
+              <li class="prop-{{ result.status if result else 'not_run' }}">
+                {{ prop_id }}
+                {% if result %}({{ result.status }}){% else %}(not run){% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <footer>
+      <p>
+        Generated by <strong>FormalGuard</strong> Compliance Report Generator
+        &mdash; This report is informational and does not replace a qualified security assessment.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+# FormalGuard — SOX Section 404 Compliance Mapping
+# ==================================================
+# Maps FormalGuard properties to SOX Section 404 internal control
+# requirements for financial data integrity in hardware systems.
+
+standard: SOX
+version: "Section 404"
+last_updated: "2026-03-30"
+
+mappings:
+  - requirement_id: "404.a.1"
+    requirement_text: >
+      Management assessment of internal controls over financial reporting —
+      hardware controls ensuring data integrity in transaction processing
+    properties:
+      - FG_TX_ATOM_001
+      - FG_TX_INTEG_001
+    verification_status: null
+    notes: >
+      Transaction atomicity (all-or-nothing) and end-to-end data integrity
+      checks ensure that hardware-accelerated financial processing does not
+      corrupt transaction data.
+
+  - requirement_id: "404.a.2"
+    requirement_text: >
+      Controls over transaction processing — ensuring completeness,
+      accuracy, and authorization of financial transactions
+    properties:
+      - FG_TX_ATOM_001
+      - FG_TX_ISOL_001
+      - FG_TX_ORDER_001
+    verification_status: null
+    notes: >
+      Atomicity prevents partial transactions, isolation prevents data
+      leakage between transactions, ordering prevents reordering attacks.
+
+  - requirement_id: "404.b.1"
+    requirement_text: >
+      Access controls — ensuring that only authorized personnel can
+      initiate or modify financial transactions
+    properties:
+      - FG_HSM_AUTH_001
+      - FG_HSM_AUTH_002
+      - FG_HSM_AUTH_003
+    verification_status: null
+    notes: >
+      Authentication before crypto operations, dual-control for critical
+      actions, and lockout after failed attempts provide hardware-enforced
+      access controls.
+
+  - requirement_id: "404.b.2"
+    requirement_text: >
+      Data integrity controls — ensuring financial data is not altered
+      during processing or storage
+    properties:
+      - FG_TX_INTEG_001
+      - FG_AES_FUNC_002
+      - FG_SHA_FUNC_002
+    verification_status: null
+    notes: >
+      Transaction checksum verification, cryptographic round-trip integrity,
+      and hash determinism ensure data is not corrupted.
+
+  - requirement_id: "404.b.3"
+    requirement_text: >
+      Key management controls — protection of cryptographic keys used
+      in financial data processing
+    properties:
+      - FG_HSM_KEY_001
+      - FG_HSM_KEY_002
+      - FG_HSM_KEY_003
+      - FG_HSM_KEY_004
+      - FG_HSM_KEY_005
+    verification_status: null
+    notes: >
+      Complete key lifecycle verification: entropy, storage isolation,
+      zeroization, atomic rotation, no remnants.
